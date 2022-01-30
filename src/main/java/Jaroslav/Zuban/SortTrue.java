@@ -6,7 +6,7 @@ import java.util.List;
 
 import static Jaroslav.Zuban.FileHandling.reader;
 
-public class SortTrue<T> {
+public class SortTrue {
     public static boolean checkingElementsSorting(int i, List t, List t1, List t2, Sort sort) throws IOException {
         Collections.reverse(t2);
         sort.setList(t);

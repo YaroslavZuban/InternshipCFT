@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SortString implements Sort {
+    private SortSelection<String> sortSelection = new SortSelection<>();
     public List<String> array;
 
     @Override
@@ -36,20 +37,6 @@ public class SortString implements Sort {
         if (SortTrue.checkingElementsSorting(i, t, t1, t2, this)) return;
     }
 
-
-    private boolean sortType(String number1, String number2) {
-        int i = number1.compareTo(number2);
-
-        if (FileHandling.kindSorting.equals("-a") && i > 0) {
-            return true;
-        } else if (FileHandling.kindSorting.equals("-d") && i < 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-
     private void merge(List<String> arr, List<String> l, List<String> r) {
         int left = l.size();
         int right = r.size();
@@ -59,7 +46,7 @@ public class SortString implements Sort {
         int idx = 0;
 
         while (i < left && j < right) {
-            if (sortType(r.get(j), l.get(i))) {
+            if (sortSelection.sortType(r.get(j), l.get(i))) {
                 arr.set(idx, l.get(i));
                 i++;
             } else {

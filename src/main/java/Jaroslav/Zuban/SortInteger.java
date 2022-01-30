@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SortInteger implements Sort {
+    private int numberFile;
+    private SortSelection<Integer> sortSelection = new SortSelection<>();
     public List<Integer> array;
 
     @Override
@@ -23,6 +25,8 @@ public class SortInteger implements Sort {
     }
 
     public void sortWatch(List temp, int i) throws IOException {
+        numberFile = i;
+
         List<Integer> t = new ArrayList<>();
         List<Integer> t1 = new ArrayList<>();
         List<Integer> t2 = new ArrayList<>();
@@ -33,27 +37,13 @@ public class SortInteger implements Sort {
                 t1.add(Integer.parseInt(String.valueOf(temp.get(j))));
                 t2.add(Integer.parseInt(String.valueOf(temp.get(j))));
             } catch (Exception e) {
-                System.out.println("Проверте " + FileHandling.nameFile.get(i) + " данный файл на корректность!");
+                System.out.println("Проверте " + FileHandling.nameFile.get(numberFile) + " данный файл на корректность.");
                 return;
             }
-
         }
 
         if (SortTrue.checkingElementsSorting(i, t, t1, t2, this)) return;
     }
-
-    private boolean sortType(Integer number1, Integer number2) {
-        int i = number1.compareTo(number2);
-
-        if (FileHandling.kindSorting.equals("-a") && i > 0) {
-            return true;
-        } else if (FileHandling.kindSorting.equals("-d") && i < 0) {
-            return true;
-        }
-
-        return false;
-    }
-
 
     private void merge(List<Integer> arr, List<Integer> l, List<Integer> r) {
         int i = 0;
@@ -61,7 +51,7 @@ public class SortInteger implements Sort {
         int idx = 0;
 
         while (i < l.size() && j < r.size()) {
-            if (sortType(r.get(j), l.get(i))) {
+            if (sortSelection.sortType(r.get(j), l.get(i))) {
                 arr.set(idx, l.get(i));
                 i++;
             } else {
@@ -89,19 +79,22 @@ public class SortInteger implements Sort {
         int mid = list.size() / 2; //
 
         ArrayList<Integer> l = new ArrayList<>();
-
-        for (int i = 0; i < mid; i++) {
-            l.add(Integer.parseInt(String.valueOf(list.get(i))));
-        }
-
         ArrayList<Integer> r = new ArrayList<>();
 
-        for (int i = mid; i < n; i++) {
-            r.add(Integer.parseInt(String.valueOf(list.get(i))));
-        }
+        try {
+            for (int i = 0; i < mid; i++) {
+                l.add(Integer.parseInt(String.valueOf(list.get(i))));
+            }
 
-        sort(l);    // сортировка 1-й половины массива
-        sort(r); // сортировка 2-й половины массива
-        merge(list, l, r);
+            for (int i = mid; i < n; i++) {
+                r.add(Integer.parseInt(String.valueOf(list.get(i))));
+            }
+
+            sort(l);    // сортировка 1-й половины массива
+            sort(r); // сортировка 2-й половины массива
+            merge(list, l, r);
+        } catch (Exception e) {
+            return;
+        }
     }
 }
