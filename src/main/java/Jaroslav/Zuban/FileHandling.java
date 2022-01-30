@@ -12,8 +12,8 @@ public class FileHandling {
     public static String type;
     public static String kindSorting = "-a";
 
-    private List mass;
-    private ArrayList<String> nameFile = new ArrayList<>();
+    private static List mass;
+    public static ArrayList<String> nameFile = new ArrayList<>();
     private ArrayList<String> temp = new ArrayList<>();
 
     public void playSort() throws IOException {
@@ -26,8 +26,9 @@ public class FileHandling {
 
     private void files() throws IOException {
 
-        if (typeDefinitions() == 1 || typeDefinitions() == 2) {
-
+        if (typeDefinitions() == 0) {
+            System.out.println("Не коректные данные!");
+        } else {
             if (typeDefinitions() == 1) {
                 sort = new SortInteger();
                 mass = new ArrayList<Integer>();
@@ -42,68 +43,19 @@ public class FileHandling {
                     while (scanner.hasNext()) {
                         temp.add(scanner.nextLine());
 
-                        if ("".equals(temp.get(temp.size() - 1)) || temp.contains(" ")||temp.get(temp.size() - 1).contains(" ")) {
+                        if ("".equals(temp.get(temp.size() - 1)) || temp.contains(" ") || temp.get(temp.size() - 1).contains(" ")) {
                             System.out.println("Есть пустное пространство в " + nameFile.get(i));
                             return;
                         }
                     }
 
+                    sort.sortWatch(temp, i);
 
-                    if (typeDefinitions() == 1) {
-                        List<Integer> t = new ArrayList<>();
-                        List<Integer> t1 = new ArrayList<>();
-                        List<Integer> t2 = new ArrayList<>();
+                    mass.addAll(temp);
 
-                        for (int j = 0; j < temp.size(); j++) {
-                            try {
-                                t.add(Integer.parseInt(String.valueOf(temp.get(j))));
-                                t1.add(Integer.parseInt(String.valueOf(temp.get(j))));
-                                t2.add(Integer.parseInt(String.valueOf(temp.get(j))));
-                            } catch (Exception e) {
-                                System.out.println("Проверте " + nameFile.get(i) + " данный файл на корректность!");
-                                return;
-                            }
-
-                        }
-
-                        Collections.reverse(t2);
-                        sort.setList(t);
-                        sort.sortPlay();
-
-                        if (!t1.equals(sort.getList()) && !t2.equals(sort.getList())) {
-                            System.out.println("Проверти пожалуйста, что файл " + nameFile.get(i) + " отсортировал правильно!");
-                            reader();
-                            return;
-                        }
-
-                        mass.addAll(temp);
-                        sort.setList(mass);
-                    } else {
-                        List<String> t = new ArrayList<>();
-                        List<String> t1 = new ArrayList<>();
-                        List<String> t2 = new ArrayList<>();
-
-                        for (int j = 0; j < temp.size(); j++) {
-                            t.add(temp.get(j));
-                            t1.add(temp.get(j));
-                            t2.add(temp.get(j));
-                        }
-
-                        Collections.reverse(t2);
-                        sort.setList(t);
-                        sort.sortPlay();
-
-                        if (!t1.equals(sort.getList()) && !t2.equals(sort.getList())) {
-                            System.out.println("Проверти пожалуйста, что файл " + nameFile.get(i) + " отсортировал правильно!");
-                            reader();
-                            return;
-                        }
-
-                        mass.addAll(temp);
-                        sort.setList(mass);
-                    }
-
+                    sort.setList(mass);
                     sort.sortPlay();
+
                     reader();
 
                     temp.clear();
@@ -111,10 +63,9 @@ public class FileHandling {
                     e.printStackTrace();
                 }
             }
-        } else {
-            System.out.println("Не коректные данные!");
         }
     }
+
 
     private int typeDefinitions() {
         if ("-i".equals(type)) {
@@ -126,7 +77,7 @@ public class FileHandling {
         return 0;
     }
 
-    private void reader() throws IOException {
+    public static void reader() throws IOException {
         FileWriter nFile = new FileWriter("C:\\Users\\babka\\IdeaProjects" + "\\InternshipCFT\\src\\main\\java\\Jaroslav\\Zuban\\" + nameFile.get(0), false);
 
         for (int i = 0; i < mass.size(); i++) {
@@ -136,7 +87,5 @@ public class FileHandling {
         nFile.flush();
         nFile.close();
     }
-
-
 }
 

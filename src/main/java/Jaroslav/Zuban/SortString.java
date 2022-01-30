@@ -1,10 +1,11 @@
 package Jaroslav.Zuban;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SortString implements Sort{
-    public List<String>array;
+public class SortString implements Sort {
+    public List<String> array;
 
     @Override
     public List getList() {
@@ -13,7 +14,7 @@ public class SortString implements Sort{
 
     @Override
     public void setList(List list) {
-        array=list;
+        array = list;
     }
 
     @Override
@@ -21,9 +22,23 @@ public class SortString implements Sort{
         sort(array);
     }
 
+    public void sortWatch(List temp, int i) throws IOException {
+        List<String> t = new ArrayList<>();
+        List<String> t1 = new ArrayList<>();
+        List<String> t2 = new ArrayList<>();
+
+        for (int j = 0; j < temp.size(); j++) {
+            t.add((String) temp.get(j));
+            t1.add((String) temp.get(j));
+            t2.add((String) temp.get(j));
+        }
+
+        if (SortTrue.checkingElementsSorting(i, t, t1, t2, this)) return;
+    }
+
+
     private boolean sortType(String number1, String number2) {
         int i = number1.compareTo(number2);
-        System.out.println(number1+"  "+number2+"  ="+i);
 
         if (FileHandling.kindSorting.equals("-a") && i > 0) {
             return true;
@@ -44,8 +59,8 @@ public class SortString implements Sort{
         int idx = 0;
 
         while (i < left && j < right) {
-            if (sortType(r.get(j),l.get(i))) {
-                arr.set(idx,  l.get(i));
+            if (sortType(r.get(j), l.get(i))) {
+                arr.set(idx, l.get(i));
                 i++;
             } else {
                 arr.set(idx, r.get(j));
@@ -65,7 +80,7 @@ public class SortString implements Sort{
     }
 
     private void sort(List<String> list) {
-        int n=list.size();
+        int n = list.size();
         if (list.size() == 1) // выход из рекурсии - массив из 1 элемента отсортирован по определению
             return;
 
@@ -85,6 +100,6 @@ public class SortString implements Sort{
 
         sort(l);    // сортировка 1-й половины массива
         sort(r); // сортировка 2-й половины массива
-        merge(list,l, r);
+        merge(list, l, r);
     }
 }
